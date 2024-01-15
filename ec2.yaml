@@ -1,0 +1,24 @@
+  MyEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - !Ref MySG 
+      ImageId: ami-06d4b7182ac3480fa
+      KeyName: test-cf
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          yum install httpd -y
+          systemctl start httpd
+          systemctl enable httpd
+          echo "Hello, World! If you see this message then CF, EC2, SG was successful" > /var/www/html/index.html
+          systemctl restart httpd
+      Tags:
+      - Key: Name
+        Value: my-web-ec2  # Replace with your desired name
+    DependsOn: MySG
+
+
+# new text here
+#nm    
